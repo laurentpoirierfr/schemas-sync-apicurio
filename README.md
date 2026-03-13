@@ -28,6 +28,7 @@ Le script mappe automatiquement :
 - `groupId = <APICURIO_GROUP_PREFIX><domain>-<category>`
 - `artifactId = nom de fichier sans extension`
 - `artifactType` basé sur `category` ou l’extension
+- `name` et `description` d’artefact (métadonnées Apicurio)
 
 Correspondance par défaut :
 - `asyncapi` -> `ASYNCAPI`
@@ -79,15 +80,17 @@ Bonnes pratiques :
 
 Format :
 
-`schema_path,group_id,artifact_id,artifact_type`
+`schema_path,group_id,artifact_id,artifact_type,artifact_name,artifact_description`
 
 Exemple :
 
-`schemas/billing/asyncapi/billing-events.yaml,billing-asyncapi,billing-events,ASYNCAPI`
+`schemas/billing/asyncapi/billing-events.yaml,billing-asyncapi,billing-events,ASYNCAPI,billing events,Schema ASYNCAPI du domaine billing categorie asyncapi source schemas/billing/asyncapi/billing-events.yaml`
 
 Règles :
 - `schema_path` doit pointer vers un fichier sous `schemas/`
 - `artifact_type` doit correspondre à un type Apicurio (ex: `ASYNCAPI`, `GRAPHQL`, `JSON`, `AVRO`, `PROTOBUF`)
+- `artifact_name` et `artifact_description` sont optionnels (si absents, des valeurs par défaut sont générées)
+- éviter les virgules dans `artifact_name` et `artifact_description` (format CSV simple)
 - si une entrée existe dans `catalog/index.csv`, elle est prioritaire sur le mapping auto
 - si une entrée existe dans `catalog/<domain>.csv`, elle est prioritaire sur `catalog/index.csv`
 - si `catalog/**` change, le workflow force une synchronisation complète de `schemas/**`
@@ -95,6 +98,7 @@ Règles :
 Avant publication, le script compare le contenu local avec la dernière version dans Apicurio :
 - si identique: `skip` (pas de nouvelle version)
 - si différent: création ou mise à jour de l’artifact
+- dans tous les cas, la métadonnée Apicurio (`name`, `description`) est synchronisée
 - en `DRY_RUN=true`: affiche l’action (`Create`, `Update`, `skip`) sans publier
 
 ## Variables d'environnement

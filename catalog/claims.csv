@@ -1,10 +1,10 @@
-# schema_path,group_id,artifact_id,artifact_type
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/asyncapi/claims-events.yaml,claims-asyncapi,claims-events,ASYNCAPI
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/avro/claim-opened.avsc,claims-avro,claim-opened,AVRO
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/graphql/claims.graphql,claims-graphql,claims,GRAPHQL
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/jsonschema/claim.schema.json,claims-jsonschema,claim.schema,JSON
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/openapi/claims-api.yaml,claims-openapi,claims-api,OPENAPI
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/protobuf/claims-events.proto,claims-protobuf,claims-events,PROTOBUF
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/wsdl/claims-service.wsdl,claims-wsdl,claims-service,WSDL
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/xml/claim.xml,claims-xml,claim,XML
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/claims/xsd/claim.xsd,claims-xsd,claim,XSD
+# schema_path,group_id,artifact_id,artifact_type,artifact_name,artifact_description
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/asyncapi/claims-events.yaml,claims-asyncapi,claims-events,ASYNCAPI,claims claims events,Schema ASYNCAPI du domaine claims categorie asyncapi source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/asyncapi/claims-events.yaml
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/avro/claim-opened.avsc,claims-avro,claim-opened,AVRO,claims claim opened,Schema AVRO du domaine claims categorie avro source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/avro/claim-opened.avsc
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/graphql/claims.graphql,claims-graphql,claims,GRAPHQL,claims claims,Schema GRAPHQL du domaine claims categorie graphql source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/graphql/claims.graphql
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/jsonschema/claim.schema.json,claims-jsonschema,claim.schema,JSON,claims claim schema,Schema JSON du domaine claims categorie jsonschema source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/jsonschema/claim.schema.json
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/openapi/claims-api.yaml,claims-openapi,claims-api,OPENAPI,claims claims api,Schema OPENAPI du domaine claims categorie openapi source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/openapi/claims-api.yaml
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/protobuf/claims-events.proto,claims-protobuf,claims-events,PROTOBUF,claims claims events,Schema PROTOBUF du domaine claims categorie protobuf source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/protobuf/claims-events.proto
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/wsdl/claims-service.wsdl,claims-wsdl,claims-service,WSDL,claims claims service,Schema WSDL du domaine claims categorie wsdl source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/wsdl/claims-service.wsdl
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/xml/claim.xml,claims-xml,claim,XML,claims claim,Schema XML du domaine claims categorie xml source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/xml/claim.xml
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/xsd/claim.xsd,claims-xsd,claim,XSD,claims claim,Schema XSD du domaine claims categorie xsd source /home/elfeo/Projects/schemas-sync-apicurio/schemas/claims/xsd/claim.xsd

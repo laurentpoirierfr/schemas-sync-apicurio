@@ -82,6 +82,36 @@ detect_artifact_type() {
   esac
 }
 
+to_readable_label() {
+  local value="$1"
+  value="${value//[-_.]/ }"
+  echo "$value"
+}
+
+default_artifact_name() {
+  local domain="$1"
+  local artifact_id="$2"
+  echo "$(to_readable_label "$domain") $(to_readable_label "$artifact_id")"
+}
+
+default_artifact_description() {
+  local domain="$1"
+  local category="$2"
+  local artifact_type="$3"
+  local rel_path="$4"
+  echo "Schema ${artifact_type} du domaine ${domain} categorie ${category} source ${rel_path}"
+}
+
+escape_json() {
+  local value="$1"
+  value="${value//\\/\\\\}"
+  value="${value//\"/\\\"}"
+  value="${value//$'\n'/\\n}"
+  value="${value//$'\r'/\\r}"
+  value="${value//$'\t'/\\t}"
+  echo "$value"
+}
+
 to_group_id() {
   local domain="$1"
   local category="$2"
@@ -121,12 +151,16 @@ load_catalog_mapping_from_file() {
     return 1
   fi
 
-  IFS=',' read -r schema_path mapped_group_id mapped_artifact_id mapped_artifact_type <<<"$line"
+  local mapped_artifact_name
+  local mapped_artifact_description
+  IFS=',' read -r schema_path mapped_group_id mapped_artifact_id mapped_artifact_type mapped_artifact_name mapped_artifact_description <<<"$line"
 
   schema_path="$(trim_spaces "$schema_path")"
   mapped_group_id="$(trim_spaces "$mapped_group_id")"
   mapped_artifact_id="$(trim_spaces "$mapped_artifact_id")"
   mapped_artifact_type="$(trim_spaces "$mapped_artifact_type")"
+  mapped_artifact_name="$(trim_spaces "${mapped_artifact_name:-}")"
+  mapped_artifact_description="$(trim_spaces "${mapped_artifact_description:-}")"
 
   if [[ -z "$mapped_group_id" || -z "$mapped_artifact_id" || -z "$mapped_artifact_type" ]]; then
     echo "Erreur: mapping incomplet dans ${catalog_path} pour ${rel_path}"
@@ -136,6 +170,8 @@ load_catalog_mapping_from_file() {
   CATALOG_GROUP_ID="$mapped_group_id"
   CATALOG_ARTIFACT_ID="$mapped_artifact_id"
   CATALOG_ARTIFACT_TYPE="$mapped_artifact_type"
+  CATALOG_ARTIFACT_NAME="$mapped_artifact_name"
+  CATALOG_ARTIFACT_DESCRIPTION="$mapped_artifact_description"
   return 0
 }
 
@@ -177,14 +213,76 @@ publish_artifact() {
   local artifact_type
   artifact_type="$(detect_artifact_type "$category" "$file")"
 
+  local artifact_name
+  artifact_name="$(default_artifact_name "$domain" "$artifact_id")"
+
+  local artifact_description
+  artifact_description="$(default_artifact_description "$domain" "$category" "$artifact_type" "$file")"
+
   if load_catalog_mapping "$file" "$domain"; then
     group_id="$CATALOG_GROUP_ID"
     artifact_id="$CATALOG_ARTIFACT_ID"
     artifact_type="$CATALOG_ARTIFACT_TYPE"
+    if [[ -n "${CATALOG_ARTIFACT_NAME:-}" ]]; then
+      artifact_name="$CATALOG_ARTIFACT_NAME"
+    fi
+    if [[ -n "${CATALOG_ARTIFACT_DESCRIPTION:-}" ]]; then
+      artifact_description="$CATALOG_ARTIFACT_DESCRIPTION"
+    fi
   fi
 
   local auth_header
   auth_header="$(make_auth_headers || true)"
+
+  sync_artifact_metadata() {
+    local target_group_id="$1"
+    local target_artifact_id="$2"
+    local target_artifact_name="$3"
+    local target_artifact_description="$4"
+
+    if is_truthy "$DRY_RUN"; then
+      echo "[DRY_RUN] Meta: ${file} -> name=${target_artifact_name}, description=${target_artifact_description}"
+      return 0
+    fi
+
+    local escaped_name
+    escaped_name="$(escape_json "$target_artifact_name")"
+
+    local escaped_description
+    escaped_description="$(escape_json "$target_artifact_description")"
+
+    local metadata_url
+    metadata_url="${APICURIO_URL}/apis/registry/v2/groups/${target_group_id}/artifacts/${target_artifact_id}/meta"
+
+    local payload
+    payload="$(printf '{"name":"%s","description":"%s"}' "$escaped_name" "$escaped_description")"
+
+    local metadata_args=(
+      -sS
+      -o /tmp/apicurio_meta_response.txt
+      -w "%{http_code}"
+      -X PUT
+      -H "Content-Type: application/json"
+    )
+
+    if [[ -n "$auth_header" ]]; then
+      metadata_args+=( -H "$auth_header" )
+    fi
+
+    metadata_args+=( --data "$payload" "$metadata_url" )
+
+    local metadata_status
+    metadata_status="$(curl "${metadata_args[@]}")"
+
+    if [[ "$metadata_status" == "200" || "$metadata_status" == "201" || "$metadata_status" == "204" ]]; then
+      echo "Métadonnées synchronisées: ${file} -> group=${target_group_id}, artifact=${target_artifact_id}"
+      return 0
+    fi
+
+    echo "Erreur metadata (${metadata_status}) pour ${file}"
+    cat /tmp/apicurio_meta_response.txt || true
+    return 1
+  }
 
   local get_url
   get_url="${APICURIO_URL}/apis/registry/v2/groups/${group_id}/artifacts/${artifact_id}"
@@ -215,7 +313,8 @@ publish_artifact() {
     if cmp -s "$file" "$tmp_remote"; then
       echo "Inchangé: ${file} -> group=${group_id}, artifact=${artifact_id} (skip)"
       rm -f "$tmp_remote"
-      return 0
+      sync_artifact_metadata "$group_id" "$artifact_id" "$artifact_name" "$artifact_description"
+      return $?
     fi
   elif [[ "$current_status" != "404" ]]; then
     echo "Erreur lecture artifact (${current_status}) pour ${file}"
@@ -232,6 +331,7 @@ publish_artifact() {
     else
       echo "[DRY_RUN] Create: ${file} -> group=${group_id}, artifact=${artifact_id}, type=${artifact_type}"
     fi
+    sync_artifact_metadata "$group_id" "$artifact_id" "$artifact_name" "$artifact_description"
     return 0
   fi
 
@@ -261,7 +361,8 @@ publish_artifact() {
 
     if [[ "$update_status" == "200" || "$update_status" == "201" || "$update_status" == "204" ]]; then
       echo "Mis à jour: ${file} -> group=${group_id}, artifact=${artifact_id}, type=${artifact_type}"
-      return 0
+      sync_artifact_metadata "$group_id" "$artifact_id" "$artifact_name" "$artifact_description"
+      return $?
     fi
 
     echo "Erreur update (${update_status}) pour ${file}"
@@ -288,7 +389,8 @@ publish_artifact() {
 
   if [[ "$create_status" == "200" || "$create_status" == "201" ]]; then
     echo "Publié: ${file} -> group=${group_id}, artifact=${artifact_id}, type=${artifact_type}"
-    return 0
+    sync_artifact_metadata "$group_id" "$artifact_id" "$artifact_name" "$artifact_description"
+    return $?
   fi
 
   echo "Erreur create (${create_status}) pour ${file}"

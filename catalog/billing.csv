@@ -1,10 +1,10 @@
-# schema_path,group_id,artifact_id,artifact_type
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/asyncapi/billing-events.yaml,billing-asyncapi,billing-events,ASYNCAPI
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/avro/invoice-created.avsc,billing-avro,invoice-created,AVRO
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/graphql/billing.graphql,billing-graphql,billing,GRAPHQL
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/jsonschema/invoice.schema.json,billing-jsonschema,invoice.schema,JSON
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/openapi/billing-api.yaml,billing-openapi,billing-api,OPENAPI
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/protobuf/billing-events.proto,billing-protobuf,billing-events,PROTOBUF
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/wsdl/billing-service.wsdl,billing-wsdl,billing-service,WSDL
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/xml/invoice.xml,billing-xml,invoice,XML
-/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/xsd/invoice.xsd,billing-xsd,invoice,XSD
+# schema_path,group_id,artifact_id,artifact_type,artifact_name,artifact_description
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/asyncapi/billing-events.yaml,billing-asyncapi,billing-events,ASYNCAPI,billing billing events,Schema ASYNCAPI du domaine billing categorie asyncapi source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/asyncapi/billing-events.yaml
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/avro/invoice-created.avsc,billing-avro,invoice-created,AVRO,billing invoice created,Schema AVRO du domaine billing categorie avro source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/avro/invoice-created.avsc
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/graphql/billing.graphql,billing-graphql,billing,GRAPHQL,billing billing,Schema GRAPHQL du domaine billing categorie graphql source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/graphql/billing.graphql
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/jsonschema/invoice.schema.json,billing-jsonschema,invoice.schema,JSON,billing invoice schema,Schema JSON du domaine billing categorie jsonschema source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/jsonschema/invoice.schema.json
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/openapi/billing-api.yaml,billing-openapi,billing-api,OPENAPI,billing billing api,Schema OPENAPI du domaine billing categorie openapi source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/openapi/billing-api.yaml
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/protobuf/billing-events.proto,billing-protobuf,billing-events,PROTOBUF,billing billing events,Schema PROTOBUF du domaine billing categorie protobuf source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/protobuf/billing-events.proto
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/wsdl/billing-service.wsdl,billing-wsdl,billing-service,WSDL,billing billing service,Schema WSDL du domaine billing categorie wsdl source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/wsdl/billing-service.wsdl
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/xml/invoice.xml,billing-xml,invoice,XML,billing invoice,Schema XML du domaine billing categorie xml source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/xml/invoice.xml
+/home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/xsd/invoice.xsd,billing-xsd,invoice,XSD,billing invoice,Schema XSD du domaine billing categorie xsd source /home/elfeo/Projects/schemas-sync-apicurio/schemas/billing/xsd/invoice.xsd

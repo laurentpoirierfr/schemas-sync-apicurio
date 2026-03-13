@@ -47,6 +47,26 @@ detect_artifact_type() {
   esac
 }
 
+to_readable_label() {
+  local value="$1"
+  value="${value//[-_.]/ }"
+  echo "$value"
+}
+
+default_artifact_name() {
+  local domain="$1"
+  local artifact_id="$2"
+  echo "$(to_readable_label "$domain") $(to_readable_label "$artifact_id")"
+}
+
+default_artifact_description() {
+  local domain="$1"
+  local category="$2"
+  local artifact_type="$3"
+  local rel_path="$4"
+  echo "Schema ${artifact_type} du domaine ${domain} categorie ${category} source ${rel_path}"
+}
+
 to_artifact_id() {
   local file="$1"
   local name
@@ -64,7 +84,7 @@ ROOT_DIR="$(trim_slash_suffix "$ROOT_DIR")"
 CATALOG_DIR="$(trim_slash_suffix "$CATALOG_DIR")"
 
 tmp_index="$(mktemp)"
-printf '# schema_path,group_id,artifact_id,artifact_type\n' > "$tmp_index"
+printf '# schema_path,group_id,artifact_id,artifact_type,artifact_name,artifact_description\n' > "$tmp_index"
 
 declare -A domain_files
 
@@ -81,13 +101,16 @@ while IFS= read -r file; do
   artifact_id="$(to_artifact_id "$file")"
   artifact_type="$(detect_artifact_type "$category" "$file")"
 
-  line="${file},${group_id},${artifact_id},${artifact_type}"
+  artifact_name="$(default_artifact_name "$domain" "$artifact_id")"
+  artifact_description="$(default_artifact_description "$domain" "$category" "$artifact_type" "$file")"
+
+  line="${file},${group_id},${artifact_id},${artifact_type},${artifact_name},${artifact_description}"
   printf '%s\n' "$line" >> "$tmp_index"
 
   domain_file="${CATALOG_DIR}/${domain}.csv"
   if [[ -z "${domain_files[$domain_file]+x}" ]]; then
     domain_files[$domain_file]=1
-    printf '# schema_path,group_id,artifact_id,artifact_type\n' > "$domain_file"
+    printf '# schema_path,group_id,artifact_id,artifact_type,artifact_name,artifact_description\n' > "$domain_file"
   fi
   printf '%s\n' "$line" >> "$domain_file"
 done < <(find "$ROOT_DIR" -type f | sort)
