@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: Claims API
+  version: 1.0.0
+  description: API REST de démonstration pour les sinistres.
+paths:
+  /claims/{claimId}:
+    get:
+      summary: Récupère un sinistre
+      parameters:
+        - in: path
+          name: claimId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sinistre trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+components:
+  schemas:
+    Claim:
+      type: object
+      required:
+        - claimId
+        - policyId
+        - status
+        - reason
+      properties:
+        claimId:
+          type: string
+        policyId:
+          type: string
+        status:
+          type: string
+        reason:
+          type: string

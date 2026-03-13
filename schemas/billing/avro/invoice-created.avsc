@@ -1,0 +1,13 @@
+{
+  "type": "record",
+  "name": "InvoiceCreated",
+  "namespace": "demo.billing",
+  "fields": [
+    { "name": "eventId", "type": "string" },
+    { "name": "invoiceId", "type": "string" },
+    { "name": "customerId", "type": "string" },
+    { "name": "amount", "type": "double" },
+    { "name": "currency", "type": "string" },
+    { "name": "issuedAt", "type": "string" }
+  ]
+}

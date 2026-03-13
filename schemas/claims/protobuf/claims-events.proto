@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package demo.claims;
+
+message ClaimOpened {
+  string event_id = 1;
+  string claim_id = 2;
+  string policy_id = 3;
+  string opened_at = 4;
+  string reason = 5;
+}
+
+message ClaimClosed {
+  string event_id = 1;
+  string claim_id = 2;
+  string closed_at = 3;
+  string outcome = 4;
+}

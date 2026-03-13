@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<claim xmlns="http://demo.local/claims/xml">
+  <claimId>CLM-2001</claimId>
+  <policyId>POL-123</policyId>
+  <status>OPEN</status>
+  <reason>Windshield damage</reason>
+</claim>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://demo.local/billing/wsdl"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="http://demo.local/billing/wsdl"
+             name="BillingService">
+  <types>
+    <xsd:schema targetNamespace="http://demo.local/billing/wsdl">
+      <xsd:element name="getInvoiceRequest" type="xsd:string"/>
+      <xsd:element name="getInvoiceResponse" type="xsd:string"/>
+    </xsd:schema>
+  </types>
+  <message name="GetInvoiceRequest">
+    <part name="invoiceId" element="tns:getInvoiceRequest"/>
+  </message>
+  <message name="GetInvoiceResponse">
+    <part name="invoice" element="tns:getInvoiceResponse"/>
+  </message>
+  <portType name="BillingPortType">
+    <operation name="GetInvoice">
+      <input message="tns:GetInvoiceRequest"/>
+      <output message="tns:GetInvoiceResponse"/>
+    </operation>
+  </portType>
+  <binding name="BillingSoapBinding" type="tns:BillingPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetInvoice">
+      <soap:operation soapAction="getInvoice"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+</definitions>

@@ -1,0 +1,68 @@
+name: Sync schemas to Apicurio
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'schemas/**'
+      - 'catalog/**'
+      - 'scripts/sync-to-apicurio.sh'
+      - '.github/workflows/apicurio-sync.yml'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Ensure executable bit
+        run: chmod +x scripts/sync-to-apicurio.sh
+
+      - name: Compute changed schema files
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+
+          if [[ -z "$BEFORE" || "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            git ls-files 'schemas/**' 'catalog/**' > changed.txt
+          else
+            git diff --name-only "$BEFORE" "$AFTER" -- 'schemas/**' 'catalog/**' > changed.txt
+          fi
+
+          echo "changed_files<<EOF" >> "$GITHUB_OUTPUT"
+          cat changed.txt >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          echo "Fichiers modifiés:"
+          cat changed.txt || true
+
+      - name: Sync to Apicurio
+        if: steps.changes.outputs.changed_files != ''
+        env:
+          APICURIO_URL: ${{ secrets.APICURIO_URL }}
+          APICURIO_AUTH_TYPE: ${{ secrets.APICURIO_AUTH_TYPE }}
+          APICURIO_TOKEN: ${{ secrets.APICURIO_TOKEN }}
+          APICURIO_USERNAME: ${{ secrets.APICURIO_USERNAME }}
+          APICURIO_PASSWORD: ${{ secrets.APICURIO_PASSWORD }}
+          APICURIO_GROUP_PREFIX: ${{ secrets.APICURIO_GROUP_PREFIX }}
+          CATALOG_DIR: catalog
+          CATALOG_FILE: catalog/index.csv
+          CHANGED_FILES: ${{ steps.changes.outputs.changed_files }}
+        run: |
+          set -euo pipefail
+          export APICURIO_AUTH_TYPE="${APICURIO_AUTH_TYPE:-token}"
+          ./scripts/sync-to-apicurio.sh schemas
+
+      - name: No changes to sync
+        if: steps.changes.outputs.changed_files == ''
+        run: echo "Aucun changement sous schemas/**"

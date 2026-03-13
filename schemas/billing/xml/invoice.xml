@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice xmlns="http://demo.local/billing/xml">
+  <invoiceId>INV-1001</invoiceId>
+  <customerId>CUST-42</customerId>
+  <amount>199.99</amount>
+  <currency>EUR</currency>
+  <status>CREATED</status>
+</invoice>

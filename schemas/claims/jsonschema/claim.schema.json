@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://demo.schemas.local/claims/claim.schema.json",
+  "title": "Claim",
+  "description": "Schéma de sinistre pour la démo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claimId",
+    "policyId",
+    "status",
+    "reason",
+    "openedAt"
+  ],
+  "properties": {
+    "claimId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policyId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["OPEN", "CLOSED"]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 3
+    },
+    "openedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "closedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "outcome": {
+      "type": ["string", "null"],
+      "enum": ["APPROVED", "REJECTED", "PARTIAL", null]
+    }
+  }
+}

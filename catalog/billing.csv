@@ -1,0 +1,10 @@
+# schema_path,group_id,artifact_id,artifact_type
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/asyncapi/billing-events.yaml,billing-asyncapi,billing-events,ASYNCAPI
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/avro/invoice-created.avsc,billing-avro,invoice-created,AVRO
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/graphql/billing.graphql,billing-graphql,billing,GRAPHQL
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/jsonschema/invoice.schema.json,billing-jsonschema,invoice.schema,JSON
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/openapi/billing-api.yaml,billing-openapi,billing-api,OPENAPI
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/protobuf/billing-events.proto,billing-protobuf,billing-events,PROTOBUF
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/wsdl/billing-service.wsdl,billing-wsdl,billing-service,WSDL
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/xml/invoice.xml,billing-xml,invoice,XML
+/home/elfeo/Téléchargements/schemas-sync-apicurio/schemas/billing/xsd/invoice.xsd,billing-xsd,invoice,XSD

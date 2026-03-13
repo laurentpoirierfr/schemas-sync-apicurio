@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: Billing API
+  version: 1.0.0
+  description: API REST de démonstration pour la facturation.
+paths:
+  /invoices/{invoiceId}:
+    get:
+      summary: Récupère une facture
+      parameters:
+        - in: path
+          name: invoiceId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Facture trouvée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+components:
+  schemas:
+    Invoice:
+      type: object
+      required:
+        - invoiceId
+        - customerId
+        - amount
+        - currency
+      properties:
+        invoiceId:
+          type: string
+        customerId:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string

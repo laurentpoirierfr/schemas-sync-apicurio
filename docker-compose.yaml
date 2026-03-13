@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: apicurio-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: apicurio
+      POSTGRES_USER: apicurio
+      POSTGRES_PASSWORD: apicurio
+    ports:
+      - "5432:5432"
+    volumes:
+      - apicurio-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apicurio -d apicurio"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  apicurio-registry:
+    image: apicurio/apicurio-registry:latest-release
+    container_name: apicurio-registry
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APICURIO_STORAGE_KIND: sql
+      APICURIO_STORAGE_SQL_KIND: postgresql
+      APICURIO_DATASOURCE_URL: jdbc:postgresql://postgres:5432/apicurio
+      APICURIO_DATASOURCE_USERNAME: apicurio
+      APICURIO_DATASOURCE_PASSWORD: apicurio
+      APICURIO_REST_DELETION_ARTIFACT_ENABLED: "true"
+      APICURIO_REST_DELETION_ARTIFACT_VERSION_ENABLED: "true"
+      APICURIO_REST_DELETION_GROUP_ENABLED: "true"
+      QUARKUS_HTTP_CORS: "true"
+      QUARKUS_HTTP_CORS_ORIGINS: http://localhost:8888,http://127.0.0.1:8888
+    ports:
+      - "8080:8080"
+
+  apicurio-registry-ui:
+    image: apicurio/apicurio-registry-ui:latest-release
+    container_name: apicurio-registry-ui
+    restart: unless-stopped
+    depends_on:
+      - apicurio-registry
+    environment:
+      REGISTRY_API_URL: http://localhost:8080/apis/registry/v3
+      REGISTRY_AUTH_TYPE: none
+    ports:
+      - "8888:8080"
+
+volumes:
+  apicurio-postgres-data:

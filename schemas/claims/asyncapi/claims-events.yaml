@@ -1,0 +1,66 @@
+asyncapi: '2.6.0'
+id: 'urn:demo:claims:events'
+info:
+  title: Claims Events API
+  version: '1.0.0'
+  description: Événements de gestion des sinistres pour la démo Apicurio.
+defaultContentType: application/json
+channels:
+  claims.opened:
+    description: Émis à l'ouverture d'un sinistre.
+    subscribe:
+      operationId: onClaimOpened
+      message:
+        $ref: '#/components/messages/ClaimOpened'
+  claims.closed:
+    description: Émis à la clôture d'un sinistre.
+    subscribe:
+      operationId: onClaimClosed
+      message:
+        $ref: '#/components/messages/ClaimClosed'
+components:
+  messages:
+    ClaimOpened:
+      name: ClaimOpened
+      payload:
+        type: object
+        required:
+          - eventId
+          - claimId
+          - policyId
+          - openedAt
+          - reason
+        properties:
+          eventId:
+            type: string
+            format: uuid
+          claimId:
+            type: string
+          policyId:
+            type: string
+          openedAt:
+            type: string
+            format: date-time
+          reason:
+            type: string
+    ClaimClosed:
+      name: ClaimClosed
+      payload:
+        type: object
+        required:
+          - eventId
+          - claimId
+          - closedAt
+          - outcome
+        properties:
+          eventId:
+            type: string
+            format: uuid
+          claimId:
+            type: string
+          closedAt:
+            type: string
+            format: date-time
+          outcome:
+            type: string
+            enum: [APPROVED, REJECTED, PARTIAL]

@@ -1,0 +1,40 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  claim(id: ID!): Claim
+  claimsByPolicy(policyId: ID!): [Claim!]!
+}
+
+type Mutation {
+  openClaim(input: OpenClaimInput!): Claim!
+  closeClaim(claimId: ID!, outcome: ClaimOutcome!): Claim!
+}
+
+type Claim {
+  id: ID!
+  policyId: ID!
+  status: ClaimStatus!
+  reason: String!
+  openedAt: String!
+  closedAt: String
+  outcome: ClaimOutcome
+}
+
+input OpenClaimInput {
+  policyId: ID!
+  reason: String!
+}
+
+enum ClaimStatus {
+  OPEN
+  CLOSED
+}
+
+enum ClaimOutcome {
+  APPROVED
+  REJECTED
+  PARTIAL
+}

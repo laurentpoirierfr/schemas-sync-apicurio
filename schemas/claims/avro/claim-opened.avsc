@@ -1,0 +1,12 @@
+{
+  "type": "record",
+  "name": "ClaimOpened",
+  "namespace": "demo.claims",
+  "fields": [
+    { "name": "eventId", "type": "string" },
+    { "name": "claimId", "type": "string" },
+    { "name": "policyId", "type": "string" },
+    { "name": "openedAt", "type": "string" },
+    { "name": "reason", "type": "string" }
+  ]
+}

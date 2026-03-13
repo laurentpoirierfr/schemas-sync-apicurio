@@ -1,0 +1,42 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  invoice(id: ID!): Invoice
+  invoicesByCustomer(customerId: ID!): [Invoice!]!
+}
+
+type Mutation {
+  createInvoice(input: CreateInvoiceInput!): Invoice!
+  markInvoiceAsPaid(invoiceId: ID!, method: PaymentMethod!): Invoice!
+}
+
+type Invoice {
+  id: ID!
+  customerId: ID!
+  amount: Float!
+  currency: String!
+  status: InvoiceStatus!
+  issuedAt: String!
+  paidAt: String
+}
+
+input CreateInvoiceInput {
+  customerId: ID!
+  amount: Float!
+  currency: String! = "EUR"
+}
+
+enum InvoiceStatus {
+  CREATED
+  PAID
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CARD
+  TRANSFER
+  DIRECT_DEBIT
+}

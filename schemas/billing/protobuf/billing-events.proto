@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package demo.billing;
+
+message InvoiceCreated {
+  string event_id = 1;
+  string invoice_id = 2;
+  string customer_id = 3;
+  double amount = 4;
+  string currency = 5;
+  string issued_at = 6;
+}
+
+message InvoicePaid {
+  string event_id = 1;
+  string invoice_id = 2;
+  string paid_at = 3;
+  string payment_method = 4;
+}

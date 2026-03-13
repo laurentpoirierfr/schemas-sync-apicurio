@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://demo.schemas.local/billing/invoice.schema.json",
+  "title": "Invoice",
+  "description": "Schéma de facture pour la démo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "invoiceId",
+    "customerId",
+    "amount",
+    "currency",
+    "status",
+    "issuedAt"
+  ],
+  "properties": {
+    "invoiceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customerId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["CREATED", "PAID", "CANCELLED"]
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "paidAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

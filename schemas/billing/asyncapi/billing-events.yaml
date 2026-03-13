@@ -1,0 +1,76 @@
+asyncapi: '2.6.0'
+id: 'urn:demo:billing:events'
+info:
+  title: Billing Events API
+  version: '1.0.0'
+  description: Événements de facturation pour la démo Apicurio.
+defaultContentType: application/json
+channels:
+  billing.invoice.created:
+    description: Émis quand une facture est créée.
+    subscribe:
+      operationId: onInvoiceCreated
+      summary: Consomme un événement InvoiceCreated
+      message:
+        $ref: '#/components/messages/InvoiceCreated'
+  billing.invoice.paid:
+    description: Émis quand une facture est payée.
+    subscribe:
+      operationId: onInvoicePaid
+      summary: Consomme un événement InvoicePaid
+      message:
+        $ref: '#/components/messages/InvoicePaid'
+components:
+  messages:
+    InvoiceCreated:
+      name: InvoiceCreated
+      title: Invoice Created Event
+      payload:
+        type: object
+        required:
+          - eventId
+          - invoiceId
+          - customerId
+          - amount
+          - currency
+          - issuedAt
+        properties:
+          eventId:
+            type: string
+            format: uuid
+          invoiceId:
+            type: string
+          customerId:
+            type: string
+          amount:
+            type: number
+            minimum: 0
+          currency:
+            type: string
+            minLength: 3
+            maxLength: 3
+          issuedAt:
+            type: string
+            format: date-time
+    InvoicePaid:
+      name: InvoicePaid
+      title: Invoice Paid Event
+      payload:
+        type: object
+        required:
+          - eventId
+          - invoiceId
+          - paidAt
+          - paymentMethod
+        properties:
+          eventId:
+            type: string
+            format: uuid
+          invoiceId:
+            type: string
+          paidAt:
+            type: string
+            format: date-time
+          paymentMethod:
+            type: string
+            enum: [CARD, TRANSFER, DIRECT_DEBIT]

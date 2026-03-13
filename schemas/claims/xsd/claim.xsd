@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://demo.local/claims/xsd"
+            xmlns="http://demo.local/claims/xsd"
+            elementFormDefault="qualified">
+  <xsd:element name="claim" type="ClaimType"/>
+  <xsd:complexType name="ClaimType">
+    <xsd:sequence>
+      <xsd:element name="claimId" type="xsd:string"/>
+      <xsd:element name="policyId" type="xsd:string"/>
+      <xsd:element name="status" type="xsd:string"/>
+      <xsd:element name="reason" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
