@@ -1,8 +1,5 @@
 # Schema Sync Apicurio (GitHub)
 
-
-* [Apicurio Demo](http://localhost:8888/dashboard)
-
 Ce repository synchronise les fichiers de `schemas/` vers Apicurio Registry.
 
 ## Structure attendue
@@ -147,6 +144,8 @@ docker compose up -d
 ```
 
 URLs utiles :
+
+- Apicurio Dashboard: `http://localhost:8888/dashboard`
 - API Registry : `http://localhost:8080/apis/registry/v3`
 - UI Registry : `http://localhost:8888`
 - PostgreSQL : `localhost:5432`
